@@ -42,10 +42,8 @@
                     {{
                         match($santri->status_pondok) {
                             'Aktif' => 'bg-green-100 text-green-800',
-                            'Tidak Aktif' => 'bg-red-100 text-red-800',
-                            'Pindah' => 'bg-orange-100 text-orange-800',
+                            'Tidak Aktif' => 'bg-orange-100 text-orange-800',
                             'Alumni' => 'bg-blue-100 text-blue-800',
-                            'Drop Out' => 'bg-gray-800 text-gray-100',
                             default => ''
                         }
                     }}"> {{ $santri->status_pondok }} </span>

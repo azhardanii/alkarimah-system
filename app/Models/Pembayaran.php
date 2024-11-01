@@ -12,7 +12,7 @@ class Pembayaran extends Model
     use HasFactory;
 
     protected $fillable = [
-        'santri_nis', 'jenis_pembayaran', 'id_pembayaran', 'metode_pembayaran', 'tagihan', 'jumlah', 'status_pembayaran', 'jadwal_tagihan', 'nama_pembayaran'
+        'santri_nis', 'jenis_pembayaran', 'id_pembayaran', 'tagihan', 'jumlah', 'status_pembayaran', 'jadwal_tagihan', 'nama_pembayaran', 'sisa', ' riwayat'
     ];
 
     public function santri()

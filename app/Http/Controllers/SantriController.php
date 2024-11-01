@@ -164,7 +164,17 @@ class SantriController extends Controller
      */
     public function show($nis)
     {
-        $santri = Santri::where('nis', $nis)->firstOrFail();
+        $santri = Santri::where('nis', $nis)->with(['pembayaran' => function ($query) {
+            $query->orderByRaw("
+                CASE
+                    WHEN status_pembayaran = 'Belum Dibayar' THEN 1
+                    WHEN status_pembayaran = 'Sedang Dicicil' THEN 2
+                    WHEN status_pembayaran = 'Sudah Lunas' THEN 3
+                    ELSE 99
+                END
+            ")->orderByRaw("STR_TO_DATE(CONCAT(tagihan, ' 1'), '%M %Y %e') DESC");
+        }])->firstOrFail();
+
         return view('santri.detail', compact('santri'));
     }
 

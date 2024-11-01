@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::post('pembayaran/cicil', [PembayaranController::class, 'cicilPembayaran'])->name('pembayaran.cicil');
     Route::post('pembayaran/cetak', [PembayaranController::class, 'cetakNota'])->name('pembayaran.cetak');
     Route::put('/pembayaran/{pembayaran}', [PembayaranController::class, 'update'])->name('pembayaran.update');
+    Route::post('/pembayaran/input-spp', [PembayaranController::class, 'inputSPP'])->name('pembayaran.inputSPP');
 
     // ROUTE PENGURUS
     Route::resource('pengurus', PengurusController::class)->except(['show']);

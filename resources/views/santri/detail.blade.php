@@ -57,10 +57,8 @@
                                     {{
                                         match($santri->status_pondok) {
                                             'Aktif' => 'bg-green-100 text-green-800',
-                                            'Tidak Aktif' => 'bg-red-100 text-red-800',
-                                            'Pindah' => 'bg-orange-100 text-orange-800',
+                                            'Tidak Aktif' => 'bg-orange-100 text-orange-800',
                                             'Alumni' => 'bg-blue-100 text-blue-800',
-                                            'Drop Out' => 'bg-gray-800 text-gray-100',
                                             default => ''
                                         }
                                     }}
@@ -192,7 +190,7 @@
                                 Share PDF
                             </a>
 
-                            <form action="{{ route('santri.destroy', $santri->nis) }}" method="POST" onsubmit="return confirm('DATA INI AKAN HILANG SECARA PERMANEN DAN TIDAK BISA DIKEMBALIKAN!! APAKAH KAMU YAKIN?');">
+                            <form action="{{ route('santri.destroy', $santri->nis) }}" method="POST" onsubmit="return confirm('SELURUH DATA SANTRI INI AKAN HILANG SECARA PERMANEN DAN TIDAK BISA DIKEMBALIKAN!! APAKAH KAMU YAKIN?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="w-full bg-red-50 border-2 border-red-700 rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-red-700 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-red-500">
@@ -213,30 +211,34 @@
                             </div>
                         </div>
 
-                        <div id="tab-panel-pembayaran" class="tab-panel pt-10 overflow-hidden w-full" aria-labelledby="tab-pembayaran" role="tabpanel" tabindex="0">
+                        <div id="tab-panel-pembayaran" class="tab-panel pt-3 w-full" aria-labelledby="tab-pembayaran" role="tabpanel" tabindex="0">
                             <form id="pembayaranForm" method="POST">
                                 @csrf
                                 <table class="divide-y divide-gray-200 min-w-full">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" class="pl-2 pb-3">Pilih</th>
+                                    <thead class="bg-gray-50 table-fixed table w-full">
+                                        <tr class="bg-gray-50 flex justify-between w-full mb-2 pr-3">
+                                            <th scope="col" class="pl-2 pb-3 pt-5">Pilih</th>
                                             <th scope="col" class="flex items-center justify-center gap-2">
-                                                <button type="button" id="dicicilButton" class="text-white bg-orange-500 hover:bg-orange-700 flex items-center pl-1.5 pr-2 py-1 rounded-lg -mt-2">
+                                                <button type="button" id="dicicilButton" class="text-white bg-orange-500 hover:bg-orange-700 flex items-center pl-1.5 pr-2 py-1 rounded-lg">
                                                     <svg class="h-5 w-5 text-white mr-0.5"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
                                                     Dicicil
                                                 </button>
-                                                <button type="button" onclick="submitForm('{{ route('pembayaran.lunas') }}')" class="text-white bg-green-600 hover:bg-green-800 flex items-center pl-1.5 pr-2 py-1 rounded-lg -mt-2">
+                                                <button type="button" onclick="submitForm('{{ route('pembayaran.lunas') }}')" class="text-white bg-green-600 hover:bg-green-800 flex items-center pl-1.5 pr-2 py-1 rounded-lg">
                                                     <svg class="h-5 w-5 text-white mr-0.5 -mt-0.5"  viewBox="0 0 24 24"  stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <polyline points="9 11 12 14 20 6" />  <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" /></svg>
                                                     Dilunasi
                                                 </button>
-                                                <button type="button" onclick="submitForm('{{ route('pembayaran.cetak') }}')" class="text-white bg-sky-500 hover:bg-sky-700 flex items-center pl-1.5 pr-2 py-1 rounded-lg -mt-2">
+                                                <button type="button" onclick="submitForm('{{ route('pembayaran.cetak') }}')" class="text-white bg-pink-500 hover:bg-pink-700 flex items-center pl-1.5 pr-2 py-1 rounded-lg">
                                                     <svg class="h-5 w-5 text-white mr-0.5"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />  <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />  <rect x="7" y="13" width="10" height="8" rx="2" /></svg>
                                                     Cetak
+                                                </button>
+                                                <button type="button" onclick="submitForm('{{ route('pembayaran.cetak') }}')" class="text-white bg-sky-500 hover:bg-sky-700 flex items-center pl-1.5 pr-2 py-1 rounded-lg">
+                                                    <svg class="h-5 w-5 text-white mr-0.5"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3" />  <path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3" />  <circle cx="15" cy="9" r="1"  /></svg>
+                                                    Kirim
                                                 </button>
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
+                                    <tbody class="bg-white divide-y divide-gray-200 block max-h-screen overflow-y-auto scrollbar-custom">
                                         @forelse($santri->pembayaran as $item)
                                         <tr>
                                             <td class="pl-2 whitespace-nowrap">
@@ -244,7 +246,7 @@
                                                     <input type="checkbox" name="selected_payments[]" value="{{ $item->id_pembayaran }}" class="focus:ring-indigo-500 h-6 w-6 text-indigo-600 border-gray-300 rounded">
                                                 </div>
                                             </td>
-                                            <td class="px-6 whitespace-nowrap">
+                                            <td class="px-3 whitespace-nowrap">
                                                 <div class="relative py-3">
                                                     <div class="flex justify-between space-x-3">
                                                         <div class="min-w-0 flex-1">

@@ -26,48 +26,23 @@ class PembayaranController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'jenis_pembayaran' => 'required',
+            'jenis_pembayaran' => 'nullable|string',
             'tagihan' => 'nullable|string',
-            'jadwal_tagihan' => 'nullable|string',
             'nama_pembayaran' => 'nullable|string',
-            'metode_pembayaran' => 'nullable|string',
             'jumlah' => 'required',
             'santri_nis' => 'required_if:jenis_pembayaran,Lainnya|exists:santris,nis'
         ]);
 
-        if ($request->jenis_pembayaran == 'SPP' || $request->jenis_pembayaran == 'KAS') {
-            $santris = Santri::where('status_pondok', 'Aktif')->get();
-
-            foreach ($santris as $santri) {
-
-                Pembayaran::create([
-                    'id_pembayaran' => $request->santri_nis.now()->format('YmdHis').mt_rand(1000, 9999),
-                    'santri_nis' => $santri->nis,
-                    'jenis_pembayaran' => $request->jenis_pembayaran,
-                    'nama_pembayaran' => $request->jenis_pembayaran,
-                    'metode_pembayaran' => $request->metode_pembayaran,
-                    'tagihan' => config('app.bulan_indo')[Carbon::parse($request->tagihan)->format('F')] . ' ' . Carbon::parse($request->tagihan)->format('Y'),
-                    'jumlah' => $request->jumlah,
-                    'sisa' => $request->jumlah,
-                    'jadwal_tagihan' => $request->jadwal_tagihan,
-                    'status_pembayaran' => 'Belum Dibayar',
-                ]);
-            }
-        } else {
-
-            Pembayaran::create([
-                'id_pembayaran' => $request->santri_nis.now()->format('YmdHis').mt_rand(1000, 9999),
-                'santri_nis' => $request->santri_nis,
-                'jenis_pembayaran' => $request->jenis_pembayaran,
-                'nama_pembayaran' => $request->nama_pembayaran,
-                'metode_pembayaran' => $request->metode_pembayaran,
-                'jadwal_tagihan' => $request->jadwal_tagihan,
-                'tagihan' => config('app.bulan_indo')[Carbon::parse($request->tagihan)->format('F')] . ' ' . Carbon::parse($request->tagihan)->format('Y'),
-                'jumlah' => $request->jumlah,
-                'sisa' => $request->jumlah,
-                'status_pembayaran' => 'Belum Dibayar',
-            ]);
-        }
+        Pembayaran::create([
+            'id_pembayaran' => $request->santri_nis.now()->format('YmdHis').mt_rand(1000, 9999),
+            'santri_nis' => $request->santri_nis,
+            'jenis_pembayaran' => 'Lainnya',
+            'nama_pembayaran' => $request->nama_pembayaran,
+            'tagihan' => config('app.bulan_indo')[Carbon::parse($request->tagihan)->format('F')] . ' ' . Carbon::parse($request->tagihan)->format('Y'),
+            'jumlah' => $request->jumlah,
+            'sisa' => $request->jumlah,
+            'status_pembayaran' => 'Belum Dibayar',
+        ]);
 
         return redirect()->route('pembayaran.index')->with('success', 'Pembayaran berhasil ditambahkan.');
     }
@@ -188,5 +163,37 @@ class PembayaranController extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors('Terjadi Kesalahan Saat Menyimpan Cicilan Pembayaran.');
         }
+    }
+
+    public function inputSPP(Request $request)
+    {
+        $tagihan = config('app.bulan_indo')[now()->format('F')] . ' ' . now()->format('Y');
+        $santris = Santri::where('status_pondok', 'Aktif')->get();
+
+        foreach ($santris as $santri) {
+            $existingTagihan = Pembayaran::where('santri_nis', $santri->nis)
+                ->where('jenis_pembayaran', 'SPP')
+                ->where('tagihan', $tagihan)
+                ->exists();
+
+            if ($existingTagihan) {
+                continue;
+            }
+
+            $biayaSPP = ($santri->jadwal_makan == '3x Sehari') ? 450000 : 350000;
+
+            Pembayaran::create([
+                'id_pembayaran' => $santri->nis . now()->format('YmdHis') . mt_rand(1000, 9999),
+                'santri_nis' => $santri->nis,
+                'jenis_pembayaran' => 'SPP',
+                'nama_pembayaran' => 'SPP',
+                'tagihan' => $tagihan,
+                'sisa' => $biayaSPP,
+                'jumlah' => $biayaSPP,
+                'status_pembayaran' => 'Belum Dibayar',
+            ]);
+        }
+
+        return redirect()->route('pembayaran.index')->with('success', 'Tagihan SPP Bulan Ini berhasil Ditambahkan.');
     }
 }

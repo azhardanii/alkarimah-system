@@ -36,16 +36,21 @@
                     <div class="p-6 bg-white text-4xl font-bold">
                         Data Pembayaran
                     </div>
-                    <button type="submit" class="m-6 flex items-center rounded bg-emerald-500 px-3 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-emerald-accent-300 hover:shadow-lg focus:bg-emerald-accent-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-600 active:shadow-lg motion-reduce:transition-none">
-                        <svg class="h-5 w-5 text-white mr-1"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="9" y1="12" x2="15" y2="12" />  <line x1="12" y1="9" x2="12" y2="15" />  <path d="M4 6v-1a1 1 0 0 1 1 -1h1m5 0h2m5 0h1a1 1 0 0 1 1 1v1m0 5v2m0 5v1a1 1 0 0 1 -1 1h-1m-5 0h-2m-5 0h-1a1 1 0 0 1 -1 -1v-1m0 -5v-2m0 -5" /></svg>
-                        Tambah SPP {{ config('app.bulan_indo')[date('F')] }}
-                    </button>
-                    <a href="{{ route('pembayaran.create') }}" type="button" class="m-6 flex items-center rounded bg-blue-500 px-3 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-accent-300 hover:shadow-lg focus:bg-blue-accent-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg motion-reduce:transition-none">
-                        <svg class="h-5 w-5 text-white mr-1"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        Tambah Data Pembayaran
-                    </a>
+                    <div class="flex gap-5">
+                      <form action="{{ route('pembayaran.inputSPP') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="my-6 flex items-center rounded bg-emerald-500 px-3 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-emerald-accent-300 hover:shadow-lg focus:bg-emerald-accent-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-emerald-600 active:shadow-lg motion-reduce:transition-none">
+                            <svg class="h-5 w-5 text-white mr-1"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="9" y1="12" x2="15" y2="12" />  <line x1="12" y1="9" x2="12" y2="15" />  <path d="M4 6v-1a1 1 0 0 1 1 -1h1m5 0h2m5 0h1a1 1 0 0 1 1 1v1m0 5v2m0 5v1a1 1 0 0 1 -1 1h-1m-5 0h-2m-5 0h-1a1 1 0 0 1 -1 -1v-1m0 -5v-2m0 -5" /></svg>
+                            Tambah SPP {{ config('app.bulan_indo')[date('F')] }}
+                        </button>
+                      </form>
+                      <a href="{{ route('pembayaran.create') }}" type="button" class="my-6 mr-6 flex items-center rounded bg-blue-500 px-3 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-accent-300 hover:shadow-lg focus:bg-blue-accent-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg motion-reduce:transition-none">
+                          <svg class="h-5 w-5 text-white mr-1"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
+                          Buat Tagihan
+                      </a>
+                    </div>
                 </div>
                 <div class="flex flex-col">
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
